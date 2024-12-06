@@ -2,11 +2,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import predict
+import joblib
+from app.globals import loaded_model
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    global loaded_model
     # https://fastapi.tiangolo.com/advanced/events/#lifespan
+    loaded_model = joblib.load('cat_model.pkl')
     yield
 
 
